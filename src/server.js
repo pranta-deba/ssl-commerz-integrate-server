@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import config from "./config/index.js";
 import app from "./app.js";
+import config from "./app/config/index.js";
 
 let server;
 async function main() {
