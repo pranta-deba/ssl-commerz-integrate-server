@@ -11,6 +11,17 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const loginUser = catchAsync(async (req, res) => {
+  const result = await UserServices.loginUserIntoDB(req.body);
+
+  res.send({
+    success: true,
+    data: result,
+    message: "Login successful",
+  });
+});
+
 export const UserControllers = {
   createUser,
+  loginUser,
 };
