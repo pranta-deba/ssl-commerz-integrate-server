@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -38,7 +38,40 @@ async function run() {
 
     app.post("/create-ssl-payment", async (req, res) => {
       const payment = req.body;
-      console.log(payment);
+      console.log("payment info: ", payment);
+
+      const initiate = {
+        store_id: "perso68150050757e8",
+        store_passwd: "perso68150050757e8@ssl",
+        total_amount: payment.price,
+        currency: "BDT",
+        tran_id: new ObjectId().toString(),
+        success_url: "http://localhost:3030/success",
+        fail_url: "http://localhost:3030/fail",
+        cancel_url: "http://localhost:3030/cancel",
+        ipn_url: "http://localhost:3030/ipn",
+        shipping_method: "Courier",
+        product_name: "Computer.",
+        product_category: "Electronic",
+        product_profile: "general",
+        cus_name: "Customer Name",
+        cus_email: payment.email,
+        cus_add1: "Dhaka",
+        cus_add2: "Dhaka",
+        cus_city: "Dhaka",
+        cus_state: "Dhaka",
+        cus_postcode: "1000",
+        cus_country: "Bangladesh",
+        cus_phone: "01711111111",
+        cus_fax: "01711111111",
+        ship_name: "Customer Name",
+        ship_add1: "Dhaka",
+        ship_add2: "Dhaka",
+        ship_city: "Dhaka",
+        ship_state: "Dhaka",
+        ship_postcode: 1000,
+        ship_country: "Bangladesh",
+      };
     });
 
     //*! API ENDPOINT END
