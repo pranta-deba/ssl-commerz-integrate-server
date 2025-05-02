@@ -7,7 +7,7 @@ import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 3000;
-const { DATABASE_URL } = process.env;
+const { DATABASE_URL, STORE_PASS, STORE_ID } = process.env;
 
 //*! Create a MongoClient
 const client = new MongoClient(DATABASE_URL, {
@@ -47,8 +47,8 @@ async function run() {
 
       //* Step 1 :
       const initiate = {
-        store_id: "perso68150050757e8",
-        store_passwd: "perso68150050757e8@ssl",
+        store_id: STORE_ID,
+        store_passwd: STORE_PASS,
         total_amount: payment.price,
         currency: "BDT",
         tran_id: trxId,
@@ -109,7 +109,7 @@ async function run() {
 
       //* Step 6 :
       const { data } = await axios.get(
-        `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${paymentSuccess.val_id}&store_id=perso68150050757e8&store_passwd=perso68150050757e8@ssl&format=json`
+        `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${paymentSuccess.val_id}&store_id=${STORE_ID}&store_passwd=${STORE_PASS}&format=json`
       );
       console.log("isValidPayment", data);
 
