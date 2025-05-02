@@ -100,6 +100,31 @@ async function run() {
     app.post("/success-payment", async (req, res) => {
       const paymentSuccess = req.body;
       console.log("payment success info: ", paymentSuccess);
+
+      const { data } = await axios.get(
+        `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${paymentSuccess.val_id}&store_id=perso68150050757e8&store_passwd=perso68150050757e8@ssl&format=json`
+      );
+      console.log("isValidPayment", data);
+
+      if (data.status !== "VALID") {
+        res.send({
+          success: false,
+          message: "Not Valid payment!",
+        });
+      }
+
+      const updatePayment = await paymentsCollection.updateOne(
+        {
+          transitionId: data.tran_id,
+        },
+        {
+          $set: {
+            status: "success",
+          },
+        }
+      );
+      console.log("updatePayment", updatePayment);
+      res.redirect("http://localhost:5173/success");
     });
 
     //*! API ENDPOINT END
