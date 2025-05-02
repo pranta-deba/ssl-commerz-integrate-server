@@ -33,7 +33,7 @@ async function run() {
     // await client.connect();
 
     const db = client.db("ssl-commerz-inregate");
-    const productCollection = db.collection("orders");
+    const paymentsCollection = db.collection("payments");
 
     //*! API ENDPOINT START
 
@@ -41,12 +41,15 @@ async function run() {
       const payment = req.body;
       console.log("payment info: ", payment);
 
+      const trxId = new ObjectId().toString();
+      payment.transitionId = trxId;
+
       const initiate = {
         store_id: "perso68150050757e8",
         store_passwd: "perso68150050757e8@ssl",
         total_amount: payment.price,
         currency: "BDT",
-        tran_id: new ObjectId().toString(),
+        tran_id: trxId,
         success_url: "http://localhost:5173/success",
         fail_url: "http://localhost:5173/fail",
         cancel_url: "http://localhost:5173/cancel",
@@ -83,9 +86,14 @@ async function run() {
         },
       });
 
-      const gatewayUrl = iniResponse?.data?.GatewayPageURL
+      const savedata = await paymentsCollection.insertOne(payment);
+      const gatewayUrl = iniResponse?.data?.GatewayPageURL;
 
-      console.log("gatewayUrl",gatewayUrl);
+      res.status(200).send({
+        success: true,
+        gatewayUrl,
+        message: "Success.",
+      });
     });
 
     //*! API ENDPOINT END
