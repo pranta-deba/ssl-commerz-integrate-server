@@ -120,7 +120,7 @@ async function run() {
           message: "Not Valid payment!",
         });
       }
-
+//* Step 7 : 
       const updatePayment = await paymentsCollection.updateOne(
         {
           transitionId: data.tran_id,
