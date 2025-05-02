@@ -36,6 +36,11 @@ async function run() {
 
     //*! API ENDPOINT START
 
+    app.post("/create-ssl-payment", async (req, res) => {
+      const payment = req.body;
+      console.log(payment);
+    });
+
     //*! API ENDPOINT END
 
     // await client.db("admin").command({ ping: 1 });
