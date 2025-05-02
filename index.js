@@ -79,6 +79,7 @@ async function run() {
         ship_country: "Bangladesh",
       };
 
+       //* Step 2 : 
       const iniResponse = await axios({
         url: "https://sandbox.sslcommerz.com/gwprocess/v3/api.php",
         method: "post",
