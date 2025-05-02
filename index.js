@@ -53,8 +53,8 @@ async function run() {
         currency: "BDT",
         tran_id: trxId,
         success_url: "http://localhost:3000/success-payment",
-        fail_url: "http://localhost:5173/fail",
-        cancel_url: "http://localhost:5173/cancel",
+        fail_url: "http://localhost:3000/payment-failed",
+        cancel_url: "http://localhost:3000/payment-cancelled",
         ipn_url: "http://localhost:3000/ipn-success-payment",
         shipping_method: "Courier",
         product_name: "Computer.",
@@ -120,19 +120,24 @@ async function run() {
         });
       }
       //* Step 7 :
-      const updatePayment = await paymentsCollection.updateOne(
-        {
-          transitionId: data.tran_id,
-        },
-        {
-          $set: {
-            status: "success",
-          },
-        }
-      );
-      console.log("updatePayment", updatePayment);
+      const deletePayment = await paymentsCollection.deleteMany({
+        transitionId: data.tran_id,
+      });
+      console.log("deletePayment", deletePayment);
       //* Step 8 :
       res.redirect("http://localhost:5173/success");
+    });
+
+    // Handle payment failure
+    app.post("/payment-failed", (req, res) => {
+      console.log("Payment failed: ", req.body);
+      res.redirect("http://localhost:5173/fail");
+    });
+
+    // Handle payment cancellation
+    app.post("/payment-cancelled", (req, res) => {
+      console.log("Payment cancelled: ", req.body);
+      res.redirect("http://localhost:5173/cancel");
     });
 
     //*! API ENDPOINT END
