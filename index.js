@@ -45,7 +45,7 @@ async function run() {
       const trxId = new ObjectId().toString();
       payment.transitionId = trxId;
 
-      //* Step 1 : 
+      //* Step 1 :
       const initiate = {
         store_id: "perso68150050757e8",
         store_passwd: "perso68150050757e8@ssl",
@@ -79,7 +79,7 @@ async function run() {
         ship_country: "Bangladesh",
       };
 
-       //* Step 2 : 
+      //* Step 2 :
       const iniResponse = await axios({
         url: "https://sandbox.sslcommerz.com/gwprocess/v3/api.php",
         method: "post",
@@ -91,11 +91,10 @@ async function run() {
 
       const savedata = await paymentsCollection.insertOne(payment);
 
-       //* Step 3 : 
+      //* Step 3 :
       const gatewayUrl = iniResponse?.data?.GatewayPageURL;
 
-
-      //* Step 4 : 
+      //* Step 4 :
       res.status(200).send({
         success: true,
         gatewayUrl,
@@ -104,11 +103,11 @@ async function run() {
     });
 
     app.post("/success-payment", async (req, res) => {
-      //* Step 5 : 
+      //* Step 5 :
       const paymentSuccess = req.body;
       console.log("payment success info: ", paymentSuccess);
 
-      //* Step 6 : 
+      //* Step 6 :
       const { data } = await axios.get(
         `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${paymentSuccess.val_id}&store_id=perso68150050757e8&store_passwd=perso68150050757e8@ssl&format=json`
       );
@@ -120,7 +119,7 @@ async function run() {
           message: "Not Valid payment!",
         });
       }
-//* Step 7 : 
+      //* Step 7 :
       const updatePayment = await paymentsCollection.updateOne(
         {
           transitionId: data.tran_id,
@@ -132,6 +131,7 @@ async function run() {
         }
       );
       console.log("updatePayment", updatePayment);
+      //* Step 8 : 
       res.redirect("http://localhost:5173/success");
     });
 
