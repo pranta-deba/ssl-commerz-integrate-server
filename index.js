@@ -108,6 +108,7 @@ async function run() {
       const paymentSuccess = req.body;
       console.log("payment success info: ", paymentSuccess);
 
+      //* Step 6 : 
       const { data } = await axios.get(
         `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${paymentSuccess.val_id}&store_id=perso68150050757e8&store_passwd=perso68150050757e8@ssl&format=json`
       );
