@@ -131,7 +131,7 @@ async function run() {
         }
       );
       console.log("updatePayment", updatePayment);
-      //* Step 8 : 
+      //* Step 8 :
       res.redirect("http://localhost:5173/success");
     });
 
