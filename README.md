@@ -9,7 +9,6 @@ This is a backend project demonstrating a basic integration with the SSLCommerz 
 * **MongoDB:** NoSQL database for storing payment information.
 * **dotenv:** Load environment variables from a `.env` file.
 * **cors:** Middleware to enable Cross-Origin Resource Sharing.
-* **mongodb:** MongoDB driver for Node.js.
 * **axios:** Promise-based HTTP client for making API requests.
 
 ## Prerequisites
