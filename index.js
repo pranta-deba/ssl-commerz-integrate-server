@@ -90,10 +90,12 @@ async function run() {
       });
 
       const savedata = await paymentsCollection.insertOne(payment);
-      
+
        //* Step 3 : 
       const gatewayUrl = iniResponse?.data?.GatewayPageURL;
 
+
+      //* Step 4 : 
       res.status(200).send({
         success: true,
         gatewayUrl,
