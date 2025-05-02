@@ -27,6 +27,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded());
 
 async function run() {
   try {
@@ -50,10 +51,10 @@ async function run() {
         total_amount: payment.price,
         currency: "BDT",
         tran_id: trxId,
-        success_url: "http://localhost:5173/success",
+        success_url: "http://localhost:3000/success-payment",
         fail_url: "http://localhost:5173/fail",
         cancel_url: "http://localhost:5173/cancel",
-        ipn_url: "http://localhost:5173/ipn-success-payment",
+        ipn_url: "http://localhost:3000/ipn-success-payment",
         shipping_method: "Courier",
         product_name: "Computer.",
         product_category: "Electronic",
@@ -94,6 +95,11 @@ async function run() {
         gatewayUrl,
         message: "Success.",
       });
+    });
+
+    app.post("/success-payment", async (req, res) => {
+      const paymentSuccess = req.body;
+      console.log("payment success info: ", paymentSuccess);
     });
 
     //*! API ENDPOINT END
