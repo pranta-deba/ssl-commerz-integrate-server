@@ -45,6 +45,7 @@ async function run() {
       const trxId = new ObjectId().toString();
       payment.transitionId = trxId;
 
+      //* Step 1 : 
       const initiate = {
         store_id: "perso68150050757e8",
         store_passwd: "perso68150050757e8@ssl",
