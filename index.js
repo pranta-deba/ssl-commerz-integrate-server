@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
+import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -46,10 +47,10 @@ async function run() {
         total_amount: payment.price,
         currency: "BDT",
         tran_id: new ObjectId().toString(),
-        success_url: "http://localhost:3030/success",
-        fail_url: "http://localhost:3030/fail",
-        cancel_url: "http://localhost:3030/cancel",
-        ipn_url: "http://localhost:3030/ipn",
+        success_url: "http://localhost:5173/success",
+        fail_url: "http://localhost:5173/fail",
+        cancel_url: "http://localhost:5173/cancel",
+        ipn_url: "http://localhost:5173/ipn-success-payment",
         shipping_method: "Courier",
         product_name: "Computer.",
         product_category: "Electronic",
@@ -72,6 +73,19 @@ async function run() {
         ship_postcode: 1000,
         ship_country: "Bangladesh",
       };
+
+      const iniResponse = await axios({
+        url: "https://sandbox.sslcommerz.com/gwprocess/v3/api.php",
+        method: "post",
+        data: initiate,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      const gatewayUrl = iniResponse?.data?.GatewayPageURL
+
+      console.log("gatewayUrl",gatewayUrl);
     });
 
     //*! API ENDPOINT END
