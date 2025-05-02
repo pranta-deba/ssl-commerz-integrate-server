@@ -40,7 +40,6 @@ async function run() {
 
     app.post("/create-ssl-payment", async (req, res) => {
       const payment = req.body;
-      console.log("payment info: ", payment);
 
       const trxId = new ObjectId().toString();
       payment.transitionId = trxId;
@@ -105,7 +104,6 @@ async function run() {
     app.post("/success-payment", async (req, res) => {
       //* Step 5 :
       const paymentSuccess = req.body;
-      console.log("payment success info: ", paymentSuccess);
 
       //* Step 6 :
       const { data } = await axios.get(
@@ -123,7 +121,7 @@ async function run() {
       const deletePayment = await paymentsCollection.deleteMany({
         transitionId: data.tran_id,
       });
-      console.log("deletePayment", deletePayment);
+
       //* Step 8 :
       res.redirect("http://localhost:5173/success");
     });
