@@ -20,7 +20,11 @@ const client = new MongoClient(DATABASE_URL, {
 
 //*! MIDDLEWARES
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "http://localhost:5173",
+    "https://ssl-commerz-integrate-client.vercel.app",
+    "https://ssl-commerz-integrate-client-dd1rtq2ez.vercel.app",
+  ],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
