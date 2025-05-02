@@ -7,7 +7,8 @@ import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 3000;
-const { DATABASE_URL, STORE_PASS, STORE_ID } = process.env;
+const { DATABASE_URL, STORE_PASS, STORE_ID, FRONTEND_URL, BACKEND_URL } =
+  process.env;
 
 //*! Create a MongoClient
 const client = new MongoClient(DATABASE_URL, {
@@ -20,11 +21,7 @@ const client = new MongoClient(DATABASE_URL, {
 
 //*! MIDDLEWARES
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://ssl-commerz-integrate-client.vercel.app",
-    "https://ssl-commerz-integrate-client-dd1rtq2ez.vercel.app",
-  ],
+  origin: ["http://localhost:5173", FRONTEND_URL],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -55,10 +52,10 @@ async function run() {
         total_amount: payment.price,
         currency: "BDT",
         tran_id: trxId,
-        success_url: "http://localhost:3000/success-payment",
-        fail_url: "http://localhost:3000/payment-failed",
-        cancel_url: "http://localhost:3000/payment-cancelled",
-        ipn_url: "http://localhost:3000/ipn-success-payment",
+        success_url: `${BACKEND_URL}/success-payment`,
+        fail_url: `${BACKEND_URL}/payment-failed`,
+        cancel_url: `${BACKEND_URL}/payment-cancelled`,
+        ipn_url: `${BACKEND_URL}/ipn-success-payment`,
         shipping_method: "Courier",
         product_name: "Computer.",
         product_category: "Electronic",
@@ -127,19 +124,19 @@ async function run() {
       });
 
       //* Step 8 :
-      res.redirect("http://localhost:5173/success");
+      res.redirect(`${FRONTEND_URL}/success`);
     });
 
     // Handle payment failure
     app.post("/payment-failed", (req, res) => {
       console.log("Payment failed: ", req.body);
-      res.redirect("http://localhost:5173/fail");
+      res.redirect(`${FRONTEND_URL}/fail`);
     });
 
     // Handle payment cancellation
     app.post("/payment-cancelled", (req, res) => {
       console.log("Payment cancelled: ", req.body);
-      res.redirect("http://localhost:5173/cancel");
+      res.redirect(`${FRONTEND_URL}/cancel`);
     });
 
     //*! API ENDPOINT END
